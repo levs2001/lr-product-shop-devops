@@ -16,6 +16,7 @@ test-job:
     - apk update
     - apk add docker-compose
     - docker-compose version
+    - service docker start
     - docker-compose -f ./src/test/resources/test_cluster/docker-compose.yml up --force-recreate  -V
     - ./gradlew test
     - docker-compose -f ./src/test/resources/test_cluster/docker-compose.yml down
