@@ -14,8 +14,8 @@ test-job:
   script:
     - echo "Test for product-shop"
     - apt-get update
-    - apk add docker-compose
-    - apt-get install docker-compose-plugin
+    - sudo apk add docker-compose
+    - sudo apt-get install docker-compose-plugin
     - docker-compose version
     - docker-compose -f ./src/test/resources/test_cluster/docker-compose.yml up --force-recreate  -V
     - ./gradlew test
