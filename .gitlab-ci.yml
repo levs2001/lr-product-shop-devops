@@ -13,8 +13,8 @@ test-job:
     - docker
   script:
     - echo "Test for product-shop"
-    - apk update
-    - apk add docker-compose
+#    - apk update
+#    - apk add docker-compose
     - docker-compose version
     - docker-compose -f ./src/test/resources/test_cluster/docker-compose.yml up --force-recreate  -V
     - ./gradlew test
