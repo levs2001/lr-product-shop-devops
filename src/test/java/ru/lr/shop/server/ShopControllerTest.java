@@ -3,7 +3,6 @@ package ru.lr.shop.server;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
@@ -16,6 +15,7 @@ import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestPropertySource;
 import ru.lr.shop.Application;
 import ru.lr.shop.domain.Product;
+import ru.lr.shop.sys.TerminalUtils;
 
 @SpringBootTest(properties = "spring.main.lazy-initialization=true", classes = Application.class)
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
@@ -29,13 +29,9 @@ class ShopControllerTest {
 
     @BeforeAll
     public static void setUp() throws IOException {
-        ProcessBuilder builder = new ProcessBuilder();
-        builder.command(
+        TerminalUtils.executeDetach(
             "docker-compose", "-f", "./src/test/resources/test_cluster/docker-compose.yml", "up", "--force-recreate", "-V", "-d"
         );
-        builder.directory(Path.of("").toAbsolutePath().toFile());
-        var process = builder.start();
-        process.getInputStream().transferTo(System.out);
     }
 
     @Test

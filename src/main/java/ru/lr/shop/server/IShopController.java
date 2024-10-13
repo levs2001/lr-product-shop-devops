@@ -14,6 +14,10 @@ import ru.lr.shop.domain.Product;
 
 @RequestMapping("/product-shop")
 public interface IShopController {
+    /**
+     * @param product, обратите внимание, что при добавлении id игнорируется, метод вернет id созданного продукта сам.
+     * @return id добавленного продукта
+     */
     @PostMapping("add-product/")
     ResponseEntity<Long> addProduct(@RequestBody Product product);
 

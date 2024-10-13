@@ -27,6 +27,9 @@ dependencies {
 
     // Postgres jdbc driver
     implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.4'
+
+    // Swagger
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.5.0'
 }
 
 test {
