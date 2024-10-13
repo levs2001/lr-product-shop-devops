@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,6 +32,13 @@ class ShopControllerTest {
     public static void setUp() throws IOException {
         TerminalUtils.executeDetach(
             "docker-compose", "-f", "./src/test/resources/test_cluster/docker-compose.yml", "up", "--force-recreate", "-V", "-d"
+        );
+    }
+
+    @AfterAll
+    public static void stop() throws IOException {
+        TerminalUtils.executeDetach(
+            "docker-compose", "-f", "./src/test/resources/test_cluster/docker-compose.yml", "down"
         );
     }
 

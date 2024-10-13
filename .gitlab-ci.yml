@@ -1,0 +1,8 @@
+build-job:
+  stage: build
+  tags:
+    - docker
+  script:
+    - echo "Build for product-shop"
+    - gradle clean build
+  image: gradle:8.10.2-jdk21
