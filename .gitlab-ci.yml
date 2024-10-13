@@ -5,7 +5,7 @@ build-job:
   script:
     - echo "Build for product-shop"
     - ./gradlew clean build -x test
-  image: gradle:8.10.2-jdk21
+  image: docker:27.3.1-cli
 
 test-job:
   stage: test
@@ -14,4 +14,4 @@ test-job:
   script:
     - echo "Test for product-shop"
     - ./gradlew test
-  image: gradle:8.10.2-jdk21
+  image: docker:27.3.1-cli
