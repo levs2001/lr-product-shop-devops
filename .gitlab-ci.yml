@@ -1,11 +1,11 @@
-build-job:
-  stage: build
-  tags:
-    - docker
-  script:
-    - echo "Build for product-shop"
-    - ./gradlew clean build -x test
-  image: gradle:8.10.2-jdk21-alpine
+#build-job:
+#  stage: build
+#  tags:
+#    - docker
+#  script:
+#    - echo "Build for product-shop"
+#    - ./gradlew clean build -x test
+#  image: gradle:8.10.2-jdk21-alpine
 
 test-job:
   stage: test
@@ -16,6 +16,7 @@ test-job:
     - apk update
     - apk add docker-compose
     - docker-compose version
+    - rc-update add docker default
     - service docker start
     - docker-compose -f ./src/test/resources/test_cluster/docker-compose.yml up --force-recreate  -V
     - ./gradlew test
