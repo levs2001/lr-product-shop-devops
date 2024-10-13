@@ -4,7 +4,7 @@ build-job:
     - docker
   script:
     - echo "Build for product-shop"
-    - docker-compose version
+    - docker compose version
     - ./gradlew clean build -x test
   image: gradle:8.10.2-jdk21
 
@@ -14,7 +14,7 @@ test-job-0:
     - docker
   script:
     - echo "Build for product-shop"
-    - docker-compose version
+    - docker compose version
     - ./gradlew clean build -x test
   image: docker:27.3.1-cli
 
