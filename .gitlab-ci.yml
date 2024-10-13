@@ -4,9 +4,19 @@ build-job:
     - docker
   script:
     - echo "Build for product-shop"
-    - apt install docker-compose-plugin
+    - docker-compose version
     - ./gradlew clean build -x test
   image: gradle:8.10.2-jdk21
+
+test-job-0:
+  stage: build
+  tags:
+    - docker
+  script:
+    - echo "Build for product-shop"
+    - docker-compose version
+    - ./gradlew clean build -x test
+  image: docker:27.3.1-cli
 
 test-job:
   stage: test
@@ -14,6 +24,5 @@ test-job:
     - docker
   script:
     - echo "Test for product-shop"
-    - apt install docker-compose-plugin
     - ./gradlew test
   image: gradle:8.10.2-jdk21
