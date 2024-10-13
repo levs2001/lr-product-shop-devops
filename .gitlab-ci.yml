@@ -1,11 +1,11 @@
-#build-job:
-#  stage: build
-#  tags:
-#    - docker
-#  script:
-#    - echo "Build for product-shop"
-#    - ./gradlew clean build -x test
-#  image: gradle:8.10.2-jdk21-alpine
+build-job:
+  stage: build
+  tags:
+    - docker
+  script:
+    - echo "Build for product-shop"
+    - ./gradlew clean build -x test
+  image: gradle:8.10.2-jdk21-alpine
 
 test-job:
   stage: test
@@ -13,11 +13,7 @@ test-job:
     - docker
   script:
     - echo "Test for product-shop"
-    - apt-get update
-    - sudo apk add docker-compose
-    - sudo apt-get install docker-compose-plugin
-    - docker-compose version
-    - docker-compose -f ./src/test/resources/test_cluster/docker-compose.yml up --force-recreate  -V
     - ./gradlew test
-    - docker-compose -f ./src/test/resources/test_cluster/docker-compose.yml down
-  image: gradle:8.10.2-jdk21-jammy
+  image: gradle:8.10.2-jdk21-alpine
+
+# TODO: Тест падает, поскольку мне не поднять контейнер с постгрес через docker-compose

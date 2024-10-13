@@ -28,19 +28,19 @@ class ShopControllerTest {
         this.controller = controller;
     }
 
-//    @BeforeAll
-//    public static void setUp() throws IOException {
-//        TerminalUtils.executeDetach(
-//            "docker-compose", "-f", "./src/test/resources/test_cluster/docker-compose.yml", "up", "--force-recreate", "-V", "-d"
-//        );
-//    }
+    @BeforeAll
+    public static void setUp() throws IOException {
+        TerminalUtils.executeDetach(
+            "docker-compose", "-f", "./src/test/resources/test_cluster/docker-compose.yml", "up", "--force-recreate", "-V", "-d"
+        );
+    }
 
-//    @AfterAll
-//    public static void stop() throws IOException {
-//        TerminalUtils.executeDetach(
-//            "docker-compose", "-f", "./src/test/resources/test_cluster/docker-compose.yml", "down"
-//        );
-//    }
+    @AfterAll
+    public static void stop() throws IOException {
+        TerminalUtils.executeDetach(
+            "docker-compose", "-f", "./src/test/resources/test_cluster/docker-compose.yml", "down"
+        );
+    }
 
     @Test
     public void testAddAndGet() {
