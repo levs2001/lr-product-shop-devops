@@ -1,5 +1,6 @@
 build_ui-job:
   stage: build
+  image: docker:latest
   script:
     - docker build -f Dockerfile -t front .
 
