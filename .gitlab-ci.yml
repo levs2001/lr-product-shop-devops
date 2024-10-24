@@ -1,11 +1,14 @@
 build_ui-job:
   stage: build
-  image: docker:latest
+  tags:
+    - docker
   script:
     - docker build -f Dockerfile -t front .
 
 test_ui-job:
   stage: test
+  tags:
+    - docker
   script:
     - docker run -rm front
     - cd front
