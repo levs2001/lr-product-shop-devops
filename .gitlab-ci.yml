@@ -1,3 +1,15 @@
+build_ui-job:
+  stage: build
+  script:
+    - docker build -f Dockerfile -t front .
+
+test_ui-job:
+  stage: test
+  script:
+    - docker run -rm front
+    - cd front
+    - python -m unittest test_ui.py
+
 build-job:
   stage: build
   tags:
