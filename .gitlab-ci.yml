@@ -1,6 +1,8 @@
 build_ui-job:
   stage: build
   image: docker:latest
+  services:
+    - "docker:dind"
   tags:
     - docker_v2
   script:
@@ -9,6 +11,8 @@ build_ui-job:
 test_ui-job:
   stage: test
   image: docker:latest
+  services:
+    - "docker:dind"
   tags:
     - docker_v2
   script:
