@@ -4,7 +4,7 @@ RUN mkdir app
 WORKDIR /app
 COPY . .
 
-RUN pip install -r ./front/requirements.txt
+RUN pip install -r requirements.txt
 
 
 
