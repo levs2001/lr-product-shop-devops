@@ -10,6 +10,8 @@ build_ui-job:
   tags:
     - docker_version_2
   script:
+    - unset DOCKER_HOST
+    - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
     - docker build -f Dockerfile -t front .
 
 test_ui-job:
@@ -38,3 +40,4 @@ test-job:
     - echo "Test for product-shop"
     - ./gradlew test
   image: gradle:8.10.2-jdk21-alpine
+Configuration (with the authentication token) was saved in "/etc/gitlab-runner/config.toml"
