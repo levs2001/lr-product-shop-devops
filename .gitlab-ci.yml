@@ -19,6 +19,8 @@ test_ui-job:
   tags:
     - docker_version_2
   script:
+    - unset DOCKER_HOST
+    - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
     - docker run --rm front
     - cd front
     - python -m unittest test_ui.py
