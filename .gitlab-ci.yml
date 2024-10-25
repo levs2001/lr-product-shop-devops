@@ -1,14 +1,14 @@
 build_ui-job:
   stage: build
   tags:
-    - docker
+    - docker_v2
   script:
     - docker build -f Dockerfile -t front .
 
 test_ui-job:
   stage: test
   tags:
-    - docker
+    - docker_v2
   script:
     - docker run -rm front
     - cd front
@@ -17,7 +17,7 @@ test_ui-job:
 build-job:
   stage: build
   tags:
-    - docker
+    - docker_v2
   script:
     - echo "Build for product-shop"
     - ./gradlew clean build -x test
@@ -26,7 +26,7 @@ build-job:
 test-job:
   stage: test
   tags:
-    - docker
+    - docker_v2
   script:
     - echo "Test for product-shop"
     - ./gradlew test
