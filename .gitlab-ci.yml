@@ -11,7 +11,7 @@ build_ui-job:
     - docker_version_2
   script:
     - unset DOCKER_HOST
-    - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
+    - docker login
     - docker build -f Dockerfile -t front .
 
 test_ui-job:
