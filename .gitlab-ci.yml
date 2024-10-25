@@ -2,7 +2,8 @@ build_ui-job:
   stage: build
   image: docker:latest
   services:
-    - "docker:dind"
+    - name: docker:dind
+      command: ["--insecure-registry", "0.0.0.0/0"]
   variables:
     DOCKER_HOST: "tcp://docker:2375"
     DOCKER_TLS_CERTDIR: ""
@@ -15,14 +16,15 @@ test_ui-job:
   stage: test
   image: docker:latest
   services:
-    - "docker:dind"
-  variables: # not strictly needed, depending on runner configuration
+    - name: docker:dind
+      command: ["--insecure-registry", "0.0.0.0/0"]
+  variables:
     DOCKER_HOST: "tcp://docker:2375"
     DOCKER_TLS_CERTDIR: ""
   tags:
     - docker_v2
   script:
-    - docker run -rm front
+    - docker run --rm front
     - cd front
     - python -m unittest test_ui.py
 
@@ -43,5 +45,3 @@ test-job:
     - echo "Test for product-shop"
     - ./gradlew test
   image: gradle:8.10.2-jdk21-alpine
-
-# TODO: Тест падает, поскольку мне не поднять контейнер с постгрес через docker-compose
