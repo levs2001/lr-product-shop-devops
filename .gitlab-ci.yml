@@ -3,6 +3,9 @@ build_ui-job:
   image: docker:latest
   services:
     - "docker:dind"
+  variables:
+    DOCKER_HOST: "tcp://docker:2375"
+    DOCKER_TLS_CERTDIR: ""
   tags:
     - docker_v2
   script:
@@ -13,6 +16,9 @@ test_ui-job:
   image: docker:latest
   services:
     - "docker:dind"
+  variables: # not strictly needed, depending on runner configuration
+    DOCKER_HOST: "tcp://docker:2375"
+    DOCKER_TLS_CERTDIR: ""
   tags:
     - docker_v2
   script:
