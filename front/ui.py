@@ -12,6 +12,7 @@ class Item:
         self.count = count
 
 
+
 def request_get_id(id):
     url = f'http://localhost:8080/product-shop/get-product/?id={id}'
     headers = {
