@@ -80,4 +80,9 @@ public class ShopController implements IShopController {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+    @Override
+    public ResponseEntity<String> health() {
+        return ResponseEntity.ok().build();
+    }
 }

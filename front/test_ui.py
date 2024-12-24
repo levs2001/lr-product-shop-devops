@@ -5,6 +5,7 @@ from json import JSONDecodeError
 
 from ui import request_get_id, get_all, request_post, request_put, request_delete, Item
 
+
 class TestItemManagement(unittest.TestCase):
 
     @patch('requests.get')
@@ -24,7 +25,8 @@ class TestItemManagement(unittest.TestCase):
         response = request_get_id(1)
 
         # Проверка вызова requests.get
-        mock_get.assert_called_once_with('http://localhost:8080/product-shop/get-product/?id=1', headers={'accept': '*/*'})
+        mock_get.assert_called_once_with('http://localhost:8080/product-shop/get-product/?id=1',
+                                         headers={'accept': '*/*'})
 
         # Проверка ответа
         self.assertEqual(response.status_code, 200)
@@ -101,6 +103,7 @@ class TestItemManagement(unittest.TestCase):
         )
 
         self.assertEqual(mock_response.status_code, 204)
+
 
 if __name__ == '__main__':
     unittest.main()

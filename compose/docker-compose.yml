@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  product-shop-front:
+    container_name: product-shop-front
+    image: levs2001/lr-product-shop-front:0.0.6-pl
+    ports:
+      - "8001:8001"
+    environment:
+      - BACKEND_URL=http://product-shop-back:8080/
+
+#    depends_on:
+#      product-shop-back:
+#        condition: service_healthy
+    networks:
+      - product-shop-network
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.0'
+        reservations:
+          memory: 256M
+          cpus: '0.25'
+
+  product-shop-back:
+    container_name: product-shop-back
+    image: levs2001/lr-product-shop:0.0.2-pl
+    ports:
+      - "8080:8080"
+    environment:
+      - POSTGRES_URI=jdbc:postgresql://product-shop-db:5432/product_shop
+    healthcheck:
+      test: ["CMD", "echo", "0"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+    networks:
+      - product-shop-network
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.0'
+        reservations:
+          memory: 256M
+          cpus: '0.25'
+
+  product-shop-db:
+    container_name: product-shop-db
+    image: postgres
+    restart: always
+    shm_size: 128mb
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_PASSWORD: example
+    networks:
+      - product-shop-network
+    volumes:
+      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+
+
+networks:
+  product-shop-network:
+    driver: bridge

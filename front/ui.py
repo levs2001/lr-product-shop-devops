@@ -1,8 +1,15 @@
-from json import JSONDecodeError
+import os
 
 import flet as ft
 import requests
 import json
+
+BACKEND_URL = os.environ.get('BACKEND_URL', 'http://localhost:8080/')
+
+
+def get_url(method: str) -> str:
+    return BACKEND_URL + method
+
 
 class Item:
     def __init__(self, id, name, producer, count):
@@ -12,19 +19,26 @@ class Item:
         self.count = count
 
 
+def safe_request(req_func, name):
+    try:
+        return req_func()
+    except Exception as error:
+        print(f"Error with request {name}: ", error)
+
 
 def request_get_id(id):
-    url = f'http://localhost:8080/product-shop/get-product/?id={id}'
+    url = get_url(f'product-shop/get-product/?id={id}')
     headers = {
         'accept': '*/*'
     }
-
-    response = requests.get(url, headers=headers)
+    req_func = lambda: requests.get(url, headers=headers)
+    response = safe_request(req_func, "get_id")
 
     print('Status Code:', response.status_code)
     print('Response Body:', response.text)
 
     return response
+
 
 def get_all(n):
     items = []
@@ -32,12 +46,14 @@ def get_all(n):
         try:
             res = request_get_id(i).json()
             items.append(Item(res['id'], res['name'], res['producer'], res['count']))
-        except JSONDecodeError:
+        except Exception as error:
+            print(f"Error while getting element {i}: {error}")
             continue
     return items
 
+
 def request_post(id, name, producer, count):
-    url = 'http://localhost:8080/product-shop/add-product/'
+    url = get_url('product-shop/add-product/')
     headers = {
         'accept': '*/*',
         'Content-Type': 'application/json'
@@ -48,35 +64,42 @@ def request_post(id, name, producer, count):
         'producer': producer,
         'count': count
     }
-    response = requests.post(url, headers=headers, data=json.dumps(data))
+    req_func = lambda: requests.post(url, headers=headers, data=json.dumps(data))
+    response = safe_request(req_func, "post")
     print('Status Code:', response.status_code)
     print('Response Body:', response.text)
 
+
 def request_put(id, count):
-    url = f'http://localhost:8080/product-shop/update-product-count/?id={id}&count={count}'
+    url = get_url(f'product-shop/update-product-count/?id={id}&count={count}')
     headers = {
         'accept': '*/*'
     }
 
-    response = requests.put(url, headers=headers)
-
+    req_func = lambda: requests.put(url, headers=headers)
+    response = safe_request(req_func, "put")
     print('Status Code:', response.status_code)
     print('Response Body:', response.text)
     print('update')
     print(url)
 
+
 def request_delete(id):
-    url = f'http://localhost:8080/product-shop/delete-product?id={id}'
+    url = get_url(f'product-shop/delete-product?id={id}')
     headers = {
         'accept': '*/*'
     }
 
-    response = requests.delete(url, headers=headers)
-
+    req_func = lambda: requests.delete(url, headers=headers)
+    response = safe_request(req_func, "delete")
     print('Status Code:', response.status_code)
     print('Response Body:', response.text)
 
+
 def main(page: ft.Page):
+    print("Starting page...")
+    print("Backend url: ", BACKEND_URL)
+
     page.title = "Item Management"
     page.theme_mode = "light"
     items = get_all(100)
@@ -84,7 +107,7 @@ def main(page: ft.Page):
     current_page = 0
     filtered_items = items
 
-    def update_items_list():
+    def update_items():
         items_table.rows.clear()
         start_index = current_page * items_per_page
         end_index = start_index + items_per_page
@@ -100,7 +123,7 @@ def main(page: ft.Page):
                             ft.Row(
                                 [
                                     ft.IconButton(icon=ft.icons.DELETE, on_click=lambda e, i=item: delete_item(i)),
-                                    #ft.IconButton(icon=ft.icons.EDIT, on_click=lambda e, i=item: edit_item(i)),
+                                    # ft.IconButton(icon=ft.icons.EDIT, on_click=lambda e, i=item: edit_item(i)),
                                     ft.IconButton(icon=ft.icons.UPDATE, on_click=lambda e, i=item: update_item(i)),
                                 ]
                             )
@@ -108,9 +131,18 @@ def main(page: ft.Page):
                     ]
                 )
             )
+
+    def update_all():
+        print("Updating page...")
+        try:
+            update_items()
+        except Exception as error:
+            print("Error during items update: ", error)
         page.update()
+        print("Updating page finished.")
 
     def add_item(e):
+        print("Add item req.")
         id = id_input.value
         name = name_input.value
         producer = producer_input.value
@@ -120,16 +152,18 @@ def main(page: ft.Page):
             new_item = Item(id, name, producer, count)
             items.append(new_item)
             filtered_items = items  # Обновляем отфильтрованные элементы
-            update_items_list()
+            update_all()
             clear_inputs()
 
     def delete_item(item):
+        print("Delete item req.")
         request_delete(item.id)
         items.remove(item)
         filtered_items = items  # Обновляем отфильтрованные элементы
-        update_items_list()
+        update_all()
 
     def edit_item(item):
+        print("Edit item req")
         id_input.value = item.id
         name_input.value = item.name
         producer_input.value = item.producer
@@ -137,6 +171,7 @@ def main(page: ft.Page):
         page.update()
 
     def update_item(item):
+        print("Update item req")
         id_input.value = item.id
         name_input.value = item.name
         producer_input.value = item.producer
@@ -144,6 +179,7 @@ def main(page: ft.Page):
         page.update()
 
     def confirm_update(e):
+        print("Confirm update req.")
         id = id_input.value
         count = count_input.value
         if id and count:
@@ -151,10 +187,11 @@ def main(page: ft.Page):
             for item in items:
                 if item.id == id:
                     item.count = count
-            update_items_list()
+            update_all()
             clear_inputs()
 
     def search_item(e):
+        print("Search item req.")
         nonlocal filtered_items
         nonlocal current_page
         search_id = search_id_input.value
@@ -162,7 +199,7 @@ def main(page: ft.Page):
         filtered_items = [item for item in items if (not search_id or str(item.id) == str(search_id)) and (
                 not search_name or search_name.lower() in item.name.lower())]
         current_page = 0  # Сбрасываем текущую страницу на первую
-        update_items_list()
+        update_all()
 
     def clear_inputs():
         id_input.value = ""
@@ -175,18 +212,18 @@ def main(page: ft.Page):
         nonlocal current_page
         if current_page > 0:
             current_page -= 1
-            update_items_list()
+            update_all()
 
     def next_page(e):
         nonlocal current_page
         if (current_page + 1) * items_per_page < len(filtered_items):
             current_page += 1
-            update_items_list()
+            update_all()
 
     def last_page(e):
         nonlocal current_page
         current_page = (len(filtered_items) - 1) // items_per_page
-        update_items_list()
+        update_all()
 
     # Поля ввода
     id_input = ft.TextField(label="ID")
@@ -237,8 +274,11 @@ def main(page: ft.Page):
         )
     )
 
-    update_items_list()
+    update_all()
+    print("Page initialization finished.")
+
 
 if __name__ == '__main__':
+    print("App initialiazation")
     ft.app(target=main, view=ft.AppView.WEB_BROWSER, host='0.0.0.0', port=8001)
-
+    print("Finished app initialiazation")

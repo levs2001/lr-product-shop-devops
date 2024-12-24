@@ -1,6 +1,7 @@
 import requests
 import json
 
+
 def request_post(id, name, producer, count):
     url = 'http://localhost:8080/product-shop/add-product/'
     headers = {
@@ -16,6 +17,7 @@ def request_post(id, name, producer, count):
     response = requests.post(url, headers=headers, data=json.dumps(data))
     print('Status Code:', response.status_code)
     print('Response Body:', response.text)
+
 
 def generate_data(n):
     products = [
@@ -40,10 +42,12 @@ def generate_data(n):
         })
     return data
 
+
 def main():
     data = generate_data(100)
     for item in data:
         request_post(item['id'], item['name'], item['producer'], item['count'])
+
 
 if __name__ == '__main__':
     main()

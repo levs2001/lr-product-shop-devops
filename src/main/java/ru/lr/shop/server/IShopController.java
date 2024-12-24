@@ -32,4 +32,7 @@ public interface IShopController {
 
     @DeleteMapping("delete-product")
     ResponseEntity<String> deleteProduct(long id);
+
+    @GetMapping("health")
+    ResponseEntity<String> health();
 }

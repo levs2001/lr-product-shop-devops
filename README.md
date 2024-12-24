@@ -12,3 +12,9 @@
 ```shell
 docker-compose -f ./src/test/resources/test_cluster/docker-compose.yml up --force-recreate  -V
 ```
+
+```commandline
+docker buildx create --use
+
+docker buildx build --platform linux/amd64,linux/arm64 -t levs2001/lr-product-shop-front:0.0.6-pl --push .
+```
