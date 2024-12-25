@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: telegram_bot
+    volumes:
+      - ./text.txt:/app/text.txt
+    restart: always
