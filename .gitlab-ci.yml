@@ -1,7 +1,8 @@
 stages:
+  - sonar-scan
   - build
   - test
-  - sonar-scan
+
 
 services:
   - docker:dind
