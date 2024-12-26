@@ -55,7 +55,7 @@ resource "yandex_kubernetes_node_group" "k8s-main-ng" {
     resources {
       cores         = 2
       core_fraction = 50
-      memory        = 2
+      memory        = 8
     }
     boot_disk {
       size = 64

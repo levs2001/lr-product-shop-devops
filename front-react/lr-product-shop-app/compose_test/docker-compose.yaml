@@ -1,17 +1,28 @@
 version: '3.8'
 
 services:
-  product-shop-front:
-    container_name: product-shop-front
-    image: levs2001/lr-product-shop-front:0.0.10-pl
-    ports:
-      - "8001:8001"
-    environment:
-      - BACKEND_URL=http://product-shop-back:8080/
+  # nginx:
+  #   container_name: nginx-api
+  #   image: nginx:latest
+  #   ports:
+  #     - "1000:80"
+  #   depends_on:
+  #     product-shop-back:
+  #       condition: service_healthy
+  #   volumes:
+  #     - ./nginx.conf:/etc/nginx/nginx.conf
+  #   networks:
+  #     - product-shop-network
 
-#    depends_on:
-#      product-shop-back:
-#        condition: service_healthy
+  product-shop-front-app:
+    container_name: product-shop-front-app
+    image: levs2001/lr-product-shop-app:0.0.4
+    ports:
+      - "3000:3000"
+    build:
+      context: ../
+      args:
+        NEXT_PUBLIC_BACKEND_URL: http://localhost:8080/
     networks:
       - product-shop-network
     deploy:
@@ -25,7 +36,7 @@ services:
 
   product-shop-back:
     container_name: product-shop-back
-    image: levs2001/lr-product-shop:0.0.2-pl
+    image: levs2001/lr-product-shop:0.0.3-pl
     ports:
       - "8080:8080"
     environment:
@@ -45,22 +56,19 @@ services:
         reservations:
           memory: 256M
           cpus: '0.25'
-
+    
   product-shop-db:
     container_name: product-shop-db
     image: postgres
     restart: always
     shm_size: 128mb
-    ports:
-      - "5433:5432"
     environment:
       POSTGRES_PASSWORD: example
     networks:
       - product-shop-network
     volumes:
       - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
-
-
+          
 networks:
   product-shop-network:
     driver: bridge

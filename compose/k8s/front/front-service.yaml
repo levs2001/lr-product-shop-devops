@@ -5,13 +5,13 @@ metadata:
     kompose.cmd: kompose convert -f ./docker-compose.yml
     kompose.version: 1.35.0 (9532ceef3)
   labels:
-    io.kompose.service: product-shop-front
-  name: product-shop-front
+    io.kompose.service: product-shop-front-app
+  name: product-shop-front-app
 spec:
   ports:
-    - name: "8001"
-      port: 8001
-      targetPort: 8001
+    - name: "3000"
+      port: 3000
+      targetPort: 3000
       
   selector:
-    io.kompose.service: product-shop-front
+    io.kompose.service: product-shop-front-app

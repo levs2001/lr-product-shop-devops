@@ -5,43 +5,33 @@ metadata:
     kompose.cmd: kompose convert -f ./docker-compose.yml
     kompose.version: 1.35.0 (9532ceef3)
   labels:
-    io.kompose.service: product-shop-back
-  name: product-shop-back
+    io.kompose.service: product-shop-front-app
+  name: product-shop-front-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      io.kompose.service: product-shop-back
+      io.kompose.service: product-shop-front-app
   template:
     metadata:
       annotations:
         kompose.cmd: kompose convert -f ./docker-compose.yml
         kompose.version: 1.35.0 (9532ceef3)
       labels:
-        io.kompose.service: product-shop-back
+        io.kompose.service: product-shop-front-app
     spec:
       containers:
         - env:
-            - name: POSTGRES_URI
-              value: jdbc:postgresql://product-shop-db:5432/product_shop
-          image: levs2001/lr-product-shop:0.0.2-pl
-          livenessProbe:
-            exec:
-              command:
-                - echo
-                - "0"
-            failureThreshold: 5
-            periodSeconds: 5
-            timeoutSeconds: 10
-          name: product-shop-back
+          image: levs2001/lr-product-shop-front:0.0.2-pl
+          name: product-shop-front-app
           ports:
-            - containerPort: 8080
+            - containerPort: 3000
               protocol: TCP
           resources:
             limits:
               cpu: "1"
               memory: "1073741824"
             requests:
-              cpu: 250m
+              cpu: "250m"
               memory: "268435456"
       restartPolicy: Always

@@ -1,16 +1,17 @@
 apiVersion: v1
 kind: Service
 metadata:
+  name: postgres
   annotations:
     kompose.cmd: kompose convert -f ./docker-compose.yml
     kompose.version: 1.35.0 (9532ceef3)
   labels:
     io.kompose.service: product-shop-db
-  name: product-shop-db
 spec:
   ports:
-    - name: "5433"
-      port: 5433
+    - name: "5432"
+      port: 5432
       targetPort: 5432
   selector:
+    app: postgres
     io.kompose.service: product-shop-db
