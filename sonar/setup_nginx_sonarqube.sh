@@ -3,7 +3,7 @@
 sudo sysctl -w vm.max_map_count=524288
 sudo sysctl -w fs.file-max=131072
 
-$PUBLIC_IP_OR_DOMAIN=$(cat /home/ryanbekov/external_ip.txt)
+PUBLIC_IP_OR_DOMAIN=$(cat /home/ryanbekov/external_ip.txt)
 
 sudo bash -c "cat <<EOF > /etc/nginx/sites-available/sonarqube
 server {
