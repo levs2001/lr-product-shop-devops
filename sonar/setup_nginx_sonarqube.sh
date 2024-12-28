@@ -9,7 +9,7 @@ PUBLIC_IP_OR_DOMAIN=$(cat /home/ryanbekov/external_ip.txt)
 sudo bash -c "cat <<EOF > /etc/nginx/sites-available/sonarqube
 server {
     listen 80;
-    server_name $PUBLIC_IP_OR_DOMAIN
+    server_name $PUBLIC_IP_OR_DOMAIN;
 
     location / {
         proxy_pass http://localhost:9000;
