@@ -33,7 +33,7 @@ kubectl apply -f back
 kubectl get services
 ```
 И смотрим на external-api у back-lb.
-swagger: http://<lb-ip>/swagger-ui/index.html
+swagger: http://158.160.158.5/swagger-ui/index.html
 
 Вместо localhost:8080 надо вставить external ip балансировщика
 ```shell

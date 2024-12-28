@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - env:
-          image: levs2001/lr-product-shop-front:0.0.2-pl
+          image: levs2001/lr-product-shop-front:0.0.3-pl
           name: product-shop-front-app
           ports:
             - containerPort: 3000

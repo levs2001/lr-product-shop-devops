@@ -3,9 +3,12 @@ package ru.lr.shop.server;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+import ru.lr.shop.alert.Alert;
+import ru.lr.shop.alert.IAlertService;
 import ru.lr.shop.db.IDbService;
 import ru.lr.shop.domain.Product;
 
@@ -13,9 +16,13 @@ import ru.lr.shop.domain.Product;
 public class ShopController implements IShopController {
     private static final Logger log = LoggerFactory.getLogger(ShopController.class);
     private final IDbService db;
+    private final IAlertService alertService;
+    private final int countThreshold;
 
-    public ShopController(IDbService db) {
+    public ShopController(IDbService db, IAlertService alertService, @Value("${count.threshold}") int countThreshold) {
         this.db = db;
+        this.alertService = alertService;
+        this.countThreshold = countThreshold;
     }
 
     @Override
@@ -23,6 +30,9 @@ public class ShopController implements IShopController {
         log.info("Adding product: {}", product);
         try {
             var id = db.addProduct(product);
+            if (product.count() > countThreshold) {
+                alertService.makeAlert(String.format("Alert: Product %s have too big count %s", id, product.count()));
+            }
             return new ResponseEntity<>(id, HttpStatus.CREATED);
         } catch (Exception e) {
             log.error("Error during adding product", e);
@@ -79,6 +89,11 @@ public class ShopController implements IShopController {
             log.error("Error during deleting product, id: {}.", id, e);
             return ResponseEntity.internalServerError().build();
         }
+    }
+
+    @Override
+    public ResponseEntity<List<Alert>> getAlerts() {
+        return ResponseEntity.ok(alertService.getAllAlerts());
     }
 
     @Override

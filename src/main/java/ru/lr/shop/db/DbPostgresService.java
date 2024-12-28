@@ -22,6 +22,7 @@ public class DbPostgresService implements IDbService {
     private static final String POSTGRES_PASSWORD = "example";
 
     private final String postgresUri;
+
     private final Properties properties = new Properties() {{
         setProperty("user", POSTGRES_USER);
         setProperty("password", POSTGRES_PASSWORD);
@@ -29,6 +30,7 @@ public class DbPostgresService implements IDbService {
 
     public DbPostgresService(@Value("${postgres.uri}") String postgresUri) throws SQLException {
         this.postgresUri = postgresUri;
+
         var postgresDriver = new Driver();
         if (!postgresDriver.acceptsURL(postgresUri)) {
             log.error("Can't initialize postgres driver.");

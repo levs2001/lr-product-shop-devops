@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.lr.shop.alert.Alert;
 import ru.lr.shop.domain.Product;
 
 @RequestMapping("/product-shop") @CrossOrigin(origins = "*")
@@ -33,6 +34,9 @@ public interface IShopController {
 
     @DeleteMapping("delete-product")
     ResponseEntity<String> deleteProduct(long id);
+
+    @GetMapping("get-alerts/")
+    ResponseEntity<List<Alert>> getAlerts();
 
     @GetMapping("health")
     ResponseEntity<String> health();

@@ -17,6 +17,9 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation group: 'org.mockito', name: 'mockito-core', version: '5.14.2'
+    testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '5.14.2'
+
 
     // For logger
     implementation 'ch.qos.logback:logback-classic:1.4.13'
