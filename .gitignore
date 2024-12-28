@@ -44,4 +44,4 @@ bin/
 .gradle
 **/target/
 
-soanr/sonarqube_data
+soanr/sonarqube_data/*
