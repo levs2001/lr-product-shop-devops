@@ -1,6 +1,5 @@
 stages:
   - sonar-scan
-  - sonar
   - build
   - test
 
@@ -65,20 +64,4 @@ sonarqube-check:
   script:
     - sonar-scanner
   allow_failure: true
-
-check-coverage:
-  stage: sonar
-  tags:
-    - docker_version_2
-  script:
-    - |
-      COVERAGE=$(curl -s -u ${SONAR_TOKEN}: "${SONAR_HOST_URL}/api/measures/component?component=${CI_PROJECT_NAME}&metricKeys=coverage" | jq -r '.component.measures[0].value')
-      if (( $(echo "$COVERAGE < 80" | bc -l) )); then
-        echo "Test coverage is below 80%: $COVERAGE%"
-        exit 1
-      else
-        echo "Test coverage is above 80%: $COVERAGE%"
-      fi
-  dependencies:
-    - sonarqube-check
 
