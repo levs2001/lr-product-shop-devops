@@ -1,5 +1,4 @@
 .gradle
-build/
 !gradle/wrapper/gradle-wrapper.jar
 
 ### IntelliJ IDEA ###
@@ -44,4 +43,8 @@ bin/
 .gradle
 **/target/
 
-**/soanr/sonarqube_data/
+/sonar/sonarqube_data/
+/sonar/sonarqube_extensions/
+/sonar/sonarqube_logs/
+/sonar/sonarqube_temp/
+/sonar/new_seup.sh
